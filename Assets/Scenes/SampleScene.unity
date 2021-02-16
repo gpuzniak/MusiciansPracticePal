@@ -587,8 +587,10 @@ MonoBehaviour:
   - F Bar
   - F open bottom
   - C fat top
+  - B
   BPM: 80
   ChordInterval: 4
+  RepeatCount: 2
   AudioSourceA: {fileID: 1112966920}
   AudioSourceB: {fileID: 1112966923}
   TickImage: {fileID: 1392765690}

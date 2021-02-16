@@ -10,6 +10,7 @@ public class Metronome : MonoBehaviour
     public int BPM = 80;
     
     public int ChordInterval = 4;
+    public int RepeatCount = 2;
     public AudioSource AudioSourceA;
     public AudioSource AudioSourceB;
     public Image TickImage;
@@ -23,6 +24,8 @@ public class Metronome : MonoBehaviour
 
     private float timeOfLastBeat = float.MinValue;
     private int currentBeat = 0;
+    private int currentRep = 0;
+    private int currentChordIndex = 0;
 
     private void Update()
     {
@@ -45,16 +48,27 @@ public class Metronome : MonoBehaviour
             Vector3.one;
 
         if (emphasize) {
-            if(this.CurrentChordName != null) {
+
+            if (this.currentRep >= this.RepeatCount - 1) {
+                this.currentChordIndex = Random.Range(0, this.Chords.Length);
+                this.currentRep = 0;
+            } else {
+                this.currentRep++;
+            }
+
+            if (this.CurrentChordName != null) {
                 Destroy(this.CurrentChordName.gameObject);
             }
+
             if (this.NextChordName != null) {
                 this.CurrentChordName = this.NextChordName;
                 this.CurrentChordName.GoToPos(this.CurrentMarker.transform.position);
             }
+
             this.NextChordName = Instantiate(ChordNameBase);
-            this.NextChordName.Init(this.Chords[Random.Range(0, this.Chords.Length)], this.NextMarker.transform.position, this.Parent);
+            this.NextChordName.Init(this.Chords[this.currentChordIndex], this.NextMarker.transform.position, this.Parent);
             this.AudioSourceA.Play();
+
         }
 
         this.AudioSourceB.Play();
